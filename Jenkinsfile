@@ -4,10 +4,10 @@ pipeline{
         jdk 'jdk17'
         maven 'maven3'
     }
-    environment {
+     environment {
         SCANNER_HOME=tool 'sonar-scanner'
     }
-    stages{
+     stages{
         stage ('clean Workspace'){
             steps{
                 cleanWs()
@@ -15,32 +15,32 @@ pipeline{
         }
         stage ('checkout scm') {
             steps {
-                git 'https://github.com/vijay3639/petstore-project.git'
+                git 'https://github.com/prabhu-devopsengg/petstore-project.git'
             }
         }
-        stage ('maven compile') {
+         stage ('maven compile') {
             steps {
                 sh 'mvn clean compile'
             }
         }
-        stage ('maven Test') {
+         stage ('maven Test') {
             steps {
                 sh 'mvn test'
             }
         }
-        stage("Sonarqube Analysis "){
+         stage("Sonarqube Analysis "){
             steps{
-                withSonarQubeEnv('sonar-server') {
+                withSonarQubeEnv('sonar-scanner') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petshop \
                     -Dsonar.java.binaries=. \
                     -Dsonar.projectKey=Petshop '''
                 }
             }
         }
-        stage("quality gate"){
+         stage("quality gate"){
             steps {
                 script {
-                  waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                  waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
                 }
            }
         }
@@ -49,7 +49,9 @@ pipeline{
                 sh 'mvn clean install -DskipTests=true'
             }
         }
-        stage('Install Docker & Deploy') {
+         }
+}
+       stage('Install Docker & Deploy') {
             steps {
                 dir('Ansible'){
                   script {

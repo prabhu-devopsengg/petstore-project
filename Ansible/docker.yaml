@@ -9,12 +9,12 @@
     - name: Log in to Docker Hub
       community.docker.docker_login:
         registry_url: https://index.docker.io/v1/
-        username: "vijay3639"
+        username: "prabhuarjunan"
         password: "dckr_pat_h2CB4WJSyf-uj8h-OpZAUl8YSbU"
 
     - name: Build and Push Docker image
       community.docker.docker_image:
-        name: "vijay3639/petstore"
+        name: "prabhuarjunan/petstore"
         tag: latest
         build:
           path: /var/lib/jenkins/workspace/petstore
@@ -24,7 +24,7 @@
     - name: Run Petstore container
       community.docker.docker_container:
         name: pet1
-        image: "vijay3639/petstore:latest"
+        image: "prabhuarjunan/petstore:latest"
         state: started
         restart_policy: always
         published_ports:
